@@ -1,0 +1,17 @@
+@import '../../assets/styles/variables';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $brand-color;
+  color: white;
+  padding: 8px;
+
+  &__element {
+    min-width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
