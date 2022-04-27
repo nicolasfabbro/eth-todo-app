@@ -1,9 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from "react-router-dom";
+import { MetaMaskInpageProvider } from "@metamask/providers";
+import MetaMaskAccountProvider from './providers/MetaMaskProvider';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+declare global {
+  interface Window {
+    ethereum: MetaMaskInpageProvider;
+  }
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +19,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <MetaMaskAccountProvider>
+        <App />
+      </MetaMaskAccountProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
