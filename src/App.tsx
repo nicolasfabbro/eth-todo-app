@@ -1,19 +1,21 @@
 import { Routes, Route } from 'react-router-dom';
+import { useMetaMaskAccount } from './providers/MetaMaskProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import WalletConnection from './pages/WalletConnection';
 import List from './pages/List';
 
 const App = () => {
-  const account = '';
+  const { connectedAccount } = useMetaMaskAccount();
+  
   return (
     <Routes>
       <Route index element={
-        <ProtectedRoute isAllowed={!account} redirectTo="/list">
+        <ProtectedRoute isAllowed={!connectedAccount} redirectTo="/list">
           <WalletConnection />
         </ProtectedRoute>
       } />
       <Route path="list" element={
-        <ProtectedRoute isAllowed={!!account}>
+        <ProtectedRoute isAllowed={!!connectedAccount}>
           <List />
         </ProtectedRoute>
       } />
