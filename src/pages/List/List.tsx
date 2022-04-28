@@ -7,6 +7,7 @@ import { getTodoListContract } from '../../utils/contracts';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
 import { Todo } from '../../types/todoList';
+import "./styles.scss";
 
 const List = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -49,24 +50,26 @@ const List = () => {
         leftElement={<LogoutIcon />}
         rightElement={<AddIcon />}
       />
-      <Container className="todo">
+      <Container className="todos">
         {loadingTodos
           ? <p>Loading list...</p>
           : (
             <ul className="todos__list">
               {
-                todos?.map(({ id, title, description, isCompleted}) => (
-                  <li key={id} className="todos__item">
-                    <div className="todos__item-title">{title}</div>
-                    <input
-                      type="checkbox"
-                      name="isCompleted"
-                      checked={isCompleted}
-                      onChange={(e) => handleChecked(e.target.value)}
-                    />
-                    <DeleteIcon onClick={handleDelete} />
-                  </li>
-                ))
+                todos.length
+                  ? todos?.map(({ id, title, description, isCompleted}) => (
+                    <li key={id} className="todos__item">
+                      <div className="todos__item-title">{title}</div>
+                      <input
+                        type="checkbox"
+                        name="isCompleted"
+                        checked={isCompleted}
+                        onChange={(e) => handleChecked(e.target.value)}
+                      />
+                      <DeleteIcon onClick={handleDelete} />
+                    </li>
+                  ))
+                : <p className="todos__no-results">You don't have any tasks to do yet!</p>
               }
             </ul>
           )
