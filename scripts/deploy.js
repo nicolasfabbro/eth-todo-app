@@ -5,10 +5,10 @@ async function main() {
   const todoListContract = await TodoListContractFactory.deploy();
   await todoListContract.deployed();
 
-  console.log("The keyboards contract is deployed!", todoListContract.address);
+  console.log("The todo list contract is deployed!", todoListContract.address);
 
-  const todos = await todoListContract.getKeyboards();
-  console.log("We got the keyboards!", todos);
+  const todos = await todoListContract.getTodos();
+  console.log("We got the list!", todos);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
