@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,6 +11,7 @@ import { Todo } from '../../types/todoList';
 import "./styles.scss";
 
 const List = () => {
+  const navigate = useNavigate();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loadingTodos, setLoadingTodos] = useState(false);
   const { ethereum, connectedAccount } = useMetaMaskAccount();
@@ -48,7 +50,7 @@ const List = () => {
     <>
       <Header
         leftElement={<LogoutIcon />}
-        rightElement={<AddIcon />}
+        rightElement={<AddIcon onClick={() => navigate('/add-new')} />}
       />
       <Container className="todos">
         {loadingTodos

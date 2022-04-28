@@ -3,6 +3,7 @@ import { useMetaMaskAccount } from './providers/MetaMaskProvider';
 import ProtectedRoute from './components/ProtectedRoute';
 import WalletConnection from './pages/WalletConnection';
 import List from './pages/List';
+import AddNew from './pages/AddNew';
 
 const App = () => {
   const { connectedAccount } = useMetaMaskAccount();
@@ -17,6 +18,11 @@ const App = () => {
       <Route path="list" element={
         <ProtectedRoute isAllowed={!!connectedAccount}>
           <List />
+        </ProtectedRoute>
+      } />
+      <Route path="add-new" element={
+        <ProtectedRoute isAllowed={!!connectedAccount}>
+          <AddNew />
         </ProtectedRoute>
       } />
     </Routes>

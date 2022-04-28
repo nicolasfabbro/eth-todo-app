@@ -1,8 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Header from '../../components/Header';
 
 const AddNew = () => {
+  const navigate = useNavigate();
+
   return (
-    <div>AddNew</div>
+    <>
+      <Header leftElement={<ArrowBackIcon onClick={() => navigate(-1)} />} />
+    </>
   )
 }
 
