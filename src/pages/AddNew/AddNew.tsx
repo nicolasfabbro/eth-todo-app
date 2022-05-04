@@ -5,9 +5,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
 import { Todo } from '../../types/todoList';
+import { useMetaMaskAccount } from '../../providers/MetaMaskProvider';
+import { getTodoListContract } from '../../utils/contracts';
 import "./styles.scss";
 
-const defaultTask = {
+const defaultTask: Todo = {
   title: '',
   description: '',
   isCompleted: false,
@@ -16,14 +18,35 @@ const defaultTask = {
 const AddNew = () => {
   const navigate = useNavigate();
   const [newTask, setNewTask] = useState<Todo>(defaultTask);
+  const [loading, setLoading] = useState('');
+  const { ethereum } = useMetaMaskAccount();
+  const todosContract = getTodoListContract(ethereum);
 
-  const resetForm = () => {
-    setNewTask(defaultTask);
-  }
+  const createTask = async () => {
+    if (!todosContract) {
+      console.error('KeyboardsContract object is required to create a keyboard');
+      return;
+    }
 
-  const createTask = () => {
-    alert(`creating ${JSON.stringify(newTask)}`);
-    resetForm();
+    setLoading('Mining...');
+
+    try {
+      const { title, description, isCompleted } = newTask;
+      const createTodo = await todosContract.addTodo(title, description, isCompleted);
+      console.log('Create transaction started...', createTodo.hash)
+
+      setLoading('Creating...');
+
+      await createTodo.wait();
+      console.log('Task created!', createTodo.hash);
+
+      navigate('/list');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading('');
+    }
+
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -67,8 +90,9 @@ const AddNew = () => {
             variant="contained"
             onClick={createTask}
             className="add-new__submit"
+            disabled={!!loading}
           >
-            Create task
+            {!!loading ? loading : 'Create task'}
           </Button>
         </div>
       </Container>

@@ -1,5 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import classnames from 'classnames';
+import { Checkbox } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,7 +19,7 @@ const List = () => {
   const { ethereum, connectedAccount } = useMetaMaskAccount();
   const todosContract = getTodoListContract(ethereum);
 
-  const getTodos = useCallback(() => async () => {
+  const getTodos = async () => {
     if (todosContract && connectedAccount) {
       setLoadingTodos(true);
 
@@ -32,19 +34,20 @@ const List = () => {
         setLoadingTodos(false);
       }
     }
-  }, [connectedAccount, todosContract]);
+  };
 
   const handleDelete = () => {
-    console.log('Deleting...');
+    alert('Delete feature is not implemented yet!');
   }
 
-  const handleChecked = (value: string) => {
-    console.log('Change value to: ', value);
+  const handleChecked = (value: boolean) => {
+    alert('Mark as done items is not implemented yet!');
+    console.log('Fail trying to change value to: ', value);
   }
 
   useEffect(() => {
     getTodos();
-  }, [getTodos]);
+  }, [!!todosContract, connectedAccount]);
 
   return (
     <>
@@ -59,16 +62,17 @@ const List = () => {
             <ul className="todos__list">
               {
                 todos.length
-                  ? todos?.map(({ id, title, description, isCompleted}) => (
-                    <li key={id} className="todos__item">
+                  ? todos?.map(({ id, title, isCompleted}) => (
+                    <li key={id} className={classnames('todos__item', {
+                      'todos__item--completed': isCompleted,
+                    })}>
                       <div className="todos__item-title">{title}</div>
-                      <input
-                        type="checkbox"
-                        name="isCompleted"
+                      <Checkbox
+                        className="todos__item-checkbox"
                         checked={isCompleted}
-                        onChange={(e) => handleChecked(e.target.value)}
+                        onChange={(e) => handleChecked(e.target.checked)}
                       />
-                      <DeleteIcon onClick={handleDelete} />
+                      <DeleteIcon onClick={handleDelete} className="todos__item-delete" />
                     </li>
                   ))
                 : <p className="todos__no-results">You don't have any tasks to do yet!</p>
